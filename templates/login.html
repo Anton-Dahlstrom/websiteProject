@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <link href="{{ url_for('static', path='/login.css') }}" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="icon" type="image/png" href="/static/images/bird_icon.svg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+{% include 'header.html' %}
+<body>
+    <div class="login">
+        <form action="/login" method="post">
+            <h1>Login</h1>
+            <p class="feedback">{{feedback}}</p>
+            <div class="text">
+                <input type="text" name="username" placeholder="Username" spellcheck="false" value="{{remember}}" required>
+                <img class="icon" src="{{ url_for('static', path='/images/iconmonstr-user-5.svg') }}" alt="icon user">
+            </div>
+
+            <div class="text">
+                <input type="password" name="password" placeholder="Password" required>
+                <img class="icon" src="{{ url_for('static', path='/images/iconmonstr-lock-2.svg') }}" alt="icon password">
+
+            </div>
+
+            <div class="remember-forgot" >
+                <label><input type="checkbox" id="rememberme" name="rememberme" value="True"
+                    {% if remember !="" %}
+                        checked
+                    {% endif %}
+                >Remember me</label>
+                <a href="#">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="btn">Login</button>
+
+            <div class="register-link">
+                <p>Don't have an account? <a href="register">Register here</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+/* HOMEPAGE */
+*{
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    text-decoration:none;
+    list-style: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.about{
+    margin-top: 80px;
+    text-align: center;
+    margin-inline: 200px;
+}
+.about .title{
+    margin-top: 80px;
+    font-size: 46px;
+    margin-bottom: 30px;
+}
+.about .content{
+    text-align: left;
+    font-size: 28px;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <link href="{{ url_for('static', path='/about.css') }}" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="homepage.css"> -->
+    <link rel="icon" type="image/png" href="/static/images/bird_icon.svg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+{% if login %}
+{% include 'headerlogin.html' %}
+{% else %}
+{% include 'header.html' %}
+{% endif %}
+<body>
+    <div class="about">   
+        <p class="title"> Tech </p>
+        <p class="content">This website was made using Python, PostgreSQL, HTML and CSS. <br><br> 
+            Main Python frameworks/libraries used: FastAPI, Jinja, SQLAlchemy and Pydantic. <br><br>
+            The list of matches and their odds are updated every 24 hours using <a href="https://the-odds-api.com/" target="_blank">the-odds-api.com</a>,
+            this means that the probabilities and odds presented are usually somewhat out of date.</p>
+            
+        <p class="title">Upcoming features</p>
+        <p class="content"> Password reset and page for account details. <br><br>
+            Pages with more extensive information for each match and more frequent updates. <br><br>
+            The website has fully functioning Oauth2 authorization which currently serves no practical use. 
+            In the future users will have the ability to store and analyze bets (whether real or simulated) and be able compare odds from different bookmakers.
+        </p> 
+
+
+        <p class="title">Contact information</p>
+        <ul class="content">
+            <li>Email: barcodezerg@outlook.com</li>
+        </ul>
+        <br><br><br>
+    </div>
+</body>
+</html>

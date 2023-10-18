@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <!-- <link rel="stylesheet" href="matches.css"> -->
+    <link href="{{ url_for('static', path='/matches.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/static/images/bird_icon.svg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+{% if login %}
+{% include 'headerlogin.html' %}
+{% else %}
+{% include 'header.html' %}
+{% endif %}
+<body>
+{% for match in matches %}  
+<a href="#" class="link">
+<div class="matches">
+    <div class="one">
+        <p class="league">
+            <img class="icon-sport" src="{{ url_for('static', path='/images/iconmonstr-soccer-1.svg') }}" alt="icon soccer">
+            {{match.sport_title}}</p>
+        <p class="team first">{{match.home_team}}</p>
+        <p class="team">{{match.away_team}}</p>
+    </div>
+
+    <div class="two">
+        <p class="day">{{match.commence_time.strftime('%A')}}</p>
+        <p class="date">{{match.commence_time.day}} {{match.commence_time.strftime('%B')[0:3]}}</p>
+        <p class="date">{{match.commence_time.hour}}:{{match.commence_time.minute}}</p>
+    </div>
+
+    <div class="three">
+        <div class="name-odds">
+        <p class="name"> <span class="odds">{{match.home_odds}} </span>{{match.home_team}}</p>
+        </div>
+        <div class="name-odds">
+        <p class="name"> <span class="odds">{{match.draw_odds}} </span>Draw</p>
+        </div>
+        <div class="name-odds">
+        <p class="last name in"> <span class="odds">{{match.away_odds}} </span> {{match.away_team}}  </p>
+
+        </div>
+    </div>
+</div>
+</a>
+{% endfor %}
+
+
+</body>
+</html>
