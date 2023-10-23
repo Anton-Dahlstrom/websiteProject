@@ -47,3 +47,9 @@ class Bet(Base):
     odds = Column(Float, nullable=False)
     owner = relationship("User")
     event = relationship("Event")
+
+class Update(Base):
+        __tablename__ = "updates"
+        updated = Column(DateTime, primary_key=True, nullable=False)
+        next_update = Column(DateTime, nullable=False)
+        api_source = Column(String)
