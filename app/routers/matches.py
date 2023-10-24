@@ -14,7 +14,7 @@ template = Jinja2Templates(directory="templates")
 
 @router.get("/", response_class=HTMLResponse)
 def get_matches(request: Request, db: Session = Depends(get_db)):
-    matches = db.query(models.Odds).filter(models.Odds.commence_time > datetime.now()).all()
+    matches = db.query(models.Odds).filter(models.Odds.commence_time > datetime.now()).order_by(models.Odds.commence_time.asc()).all()
     context = {"request": request,"login": False, "matches": matches}
     id = oauth2.verify_cookie(request)
     if id:
