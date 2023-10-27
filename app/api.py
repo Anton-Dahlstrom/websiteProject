@@ -14,36 +14,63 @@ region = "eu"
 markets = "h2h"
 url = f"https://api.the-odds-api.com/v4/sports/{sport}/odds/?apiKey={api_key}&regions={region}&markets={markets}"
 
+bookmaker = "pinnacle"
+
+def addUpdateTimeToDB(db):
+    update = models.Update()
+    currentTime = datetime.now()
+    next_update = currentTime + timedelta(hours=23)
+    update.updated = currentTime
+    update.next_update = next_update
+    update.api_source = bookmaker
+    db.add(update)
+    db.commit()
+    db.refresh(update) 
+
+def timeForNextUpdate(db):
+    last_update = db.query(models.Update).order_by(models.Update.updated.desc()).limit(1).first()
+    return last_update.next_update
 
 def update_matches():
     with SessionLocal() as db:
-            r = requests.get(url)
-            data = r.json()
-            events = schemas.Model(data)
-            for event in events.root:
-                for bookmaker in event.bookmakers:
-                    if bookmaker.key == "pinnacle":
-                        for market in bookmaker.markets:
-                            for outcome in market.outcomes:
-                                if event.home_team == outcome.name:
-                                    event.home_odds = outcome.price
-                                elif event.away_team == outcome.name:
-                                    event.away_odds = outcome.price
-                                elif outcome.name == "Draw":
-                                    event.draw_odds = outcome.price
-                
-                schema = schemas.OddsCreate(**event.model_dump())
-                new_event = models.Odds(**schema.model_dump())
-                event_exists = db.query(models.Odds).filter(models.Odds.id == new_event.id).first()
-                if not event_exists:
-                    new_event.commence_time += timedelta(hours=2)
-                    db.add(new_event)
-                    db.commit()
-                else:
-                    event_exists.home_odds = new_event.home_odds
-                    event_exists.away_odds = new_event.away_odds
-                    event_exists.draw_odds = new_event.draw_odds
-                    db.commit()    
+            if datetime.now() > timeForNextUpdate(db):
+                r = requests.get(url)
+                data = r.json()
+                events = schemas.Model(data)
+                addUpdateTimeToDB(db)
+                for event in events.root:
+                    for bookmaker in event.bookmakers:
+                        if bookmaker.key == bookmaker:
+                            for market in bookmaker.markets:
+                                for outcome in market.outcomes:
+                                    if event.home_team == outcome.name:
+                                        event.home_odds = outcome.price
+                                    elif event.away_team == outcome.name:
+                                        event.away_odds = outcome.price
+                                    elif outcome.name == "Draw":
+                                        event.draw_odds = outcome.price
+                    
+                    schema = schemas.OddsCreate(**event.model_dump())
+                    new_event = models.Odds(**schema.model_dump())
+                    event_exists = db.query(models.Odds).filter(models.Odds.id == new_event.id).first()
+                    if not event_exists:
+                        new_event.commence_time += timedelta(hours=2)
+                        db.add(new_event)
+                        db.commit()
+                    else:
+                        event_exists.home_odds = new_event.home_odds
+                        event_exists.away_odds = new_event.away_odds
+                        event_exists.draw_odds = new_event.draw_odds
+                        db.commit()    
+
+
+        # print(next)
+    # if t > next:
+    #     update_matches()
+    #     with open("app/next_import.txt", "w") as file:
+    #         next_update = t + timedelta(hours=23)
+    #         file.write(str(next_update))
+
 
 # -- For future optimization --     
           

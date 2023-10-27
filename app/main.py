@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from .routers import matches, users, auth
 from fastapi.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
-from . import oauth2, updater
+from . import oauth2, updater, api
 import sched, time
 from threading import Thread
 
@@ -13,7 +13,7 @@ app = FastAPI()
 s = sched.scheduler(time.time, time.sleep)
 
 def print_event(sc=None): 
-    updater.update()
+    api.update_matches()
     sc.enter(84600, 1, print_event, (sc,))
     sc.run()
 
