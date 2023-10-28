@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from .routers import matches, users, auth
 from fastapi.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
-from . import oauth2, updater, api
+from . import oauth2, api
 import sched, time
 from threading import Thread
 
