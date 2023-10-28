@@ -29,11 +29,15 @@ def addUpdateTimeToDB(db):
 
 def timeForNextUpdate(db):
     last_update = db.query(models.Update).order_by(models.Update.updated.desc()).limit(1).first()
-    return last_update.next_update
+    if last_update:
+        return last_update.next_update
+    else:
+        return None
 
 def update_matches():
     with SessionLocal() as db:
-            if datetime.now() > timeForNextUpdate(db):
+            next_update = timeForNextUpdate(db)
+            if next_update == None or datetime.now() > next_update:
                 r = requests.get(url)
                 data = r.json()
                 events = schemas.Model(data)
