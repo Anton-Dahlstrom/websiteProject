@@ -40,14 +40,12 @@ def update_matches():
             if next_update == None or datetime.now() > next_update:        
                 r = requests.get(url)
                 data = r.json()
-            # with open("data.json", "r") as file:
-            #     data = json.load(file)          
+      
                 events = schemas.Model(data)
                 addUpdateTimeToDB(db)
                 for event in events.root:
                     for bookie in event.bookmakers:
                         if bookie.key == bookmaker:
-                            print("got here")
                             for market in bookie.markets:
                                 for outcome in market.outcomes:
                                     if event.home_team == outcome.name:
@@ -56,7 +54,6 @@ def update_matches():
                                         event.away_odds = outcome.price
                                     elif outcome.name == "Draw":
                                         event.draw_odds = outcome.price
-                                        print(event.draw_odds, "becomes", outcome.price)
                     
                     schema = schemas.OddsCreate(**event.model_dump())
                     new_event = models.Odds(**schema.model_dump())
@@ -71,7 +68,6 @@ def update_matches():
                         event_exists.away_odds = new_event.away_odds
                         event_exists.draw_odds = new_event.draw_odds
                         db.commit()   
-update_matches()
 
 # -- For future optimization --     
           
