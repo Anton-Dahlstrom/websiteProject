@@ -33,27 +33,37 @@ def timeForNextUpdate(db):
         return last_update.next_update
     else:
         return None
-
+def setOdds(event):
+    for bookie in event.bookmakers:
+        if bookie.key == bookmaker:
+            for market in bookie.markets:
+                for outcome in market.outcomes:
+                    if event.home_team == outcome.name:
+                        event.home_odds = outcome.price
+                    elif event.away_team == outcome.name:
+                        event.away_odds = outcome.price
+                    elif outcome.name == "Draw":
+                        event.draw_odds = outcome.price
 def update_matches():
     with SessionLocal() as db:
             next_update = timeForNextUpdate(db)
             if next_update == None or datetime.now() > next_update:        
                 r = requests.get(url)
-                data = r.json()
-      
+                data = r.json()      
                 events = schemas.Model(data)
                 addUpdateTimeToDB(db)
                 for event in events.root:
-                    for bookie in event.bookmakers:
-                        if bookie.key == bookmaker:
-                            for market in bookie.markets:
-                                for outcome in market.outcomes:
-                                    if event.home_team == outcome.name:
-                                        event.home_odds = outcome.price
-                                    elif event.away_team == outcome.name:
-                                        event.away_odds = outcome.price
-                                    elif outcome.name == "Draw":
-                                        event.draw_odds = outcome.price
+                    setOdds(event)
+                    # for bookie in event.bookmakers:
+                    #     if bookie.key == bookmaker:
+                    #         for market in bookie.markets:
+                    #             for outcome in market.outcomes:
+                    #                 if event.home_team == outcome.name:
+                    #                     event.home_odds = outcome.price
+                    #                 elif event.away_team == outcome.name:
+                    #                     event.away_odds = outcome.price
+                    #                 elif outcome.name == "Draw":
+                    #                     event.draw_odds = outcome.price
                     
                     schema = schemas.OddsCreate(**event.model_dump())
                     new_event = models.Odds(**schema.model_dump())
