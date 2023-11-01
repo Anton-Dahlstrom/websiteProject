@@ -28,7 +28,7 @@
     <div class="two">
         <p class="day">{{match.commence_time.strftime('%A')}}</p>
         <p class="date">{{match.commence_time.day}} {{match.commence_time.strftime('%B')[0:3]}}</p>
-        <p class="date">{{match.commence_time.hour}}:{{match.commence_time.minute}}</p>
+        <p class="date">{{match.commence_time.hour}}:{{match.commence_time.strftime('%M')}}</p>
     </div>
 
     <div class="three">
