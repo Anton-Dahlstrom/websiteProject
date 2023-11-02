@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Request, Form
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from .. import database, schemas, models, utils, oauth2
+from .. import schemas, models, utils, oauth2
 from starlette.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
+from ..database import get_db
 
 router = APIRouter(tags=['authentication'])
 template = Jinja2Templates(directory="templates")
@@ -18,7 +19,7 @@ def get_login(request:Request):
 
 @router.post("/login", response_class=RedirectResponse)
 def login(request: Request, rememberme: bool = Form(False), user_credentials: OAuth2PasswordRequestForm = Depends(), 
-          db: Session = Depends(database.get_db)):    
+          db: Session = Depends(get_db)):    
     user = db.query(models.User).filter(models.User.username == user_credentials.username).first()
     redirect_url = request.url_for("index")
     print(redirect_url)
@@ -39,7 +40,23 @@ def login(request: Request, rememberme: bool = Form(False), user_credentials: OA
 
 @router.get("/logout", response_class=HTMLResponse)
 def logout(request: Request):
-    context = {"request": request, "userlink": "user", "login": False}
+    context = {"request": request, "login": False}
     response = template.TemplateResponse("index.html", context)
     response.delete_cookie("Authorization")
+    return response
+
+@router.get("/reset_password", response_class=HTMLResponse)
+def reset_password(request: Request):
+    context = {"request": request, "login": False}
+    response = template.TemplateResponse("resetpassword.html", context)
+    return response
+
+@router.post("/reset_password", response_class=HTMLResponse)
+def reset_password(request: Request, email: str = Form(), db: Session = Depends(get_db)):
+    email = db.query(models.User).filter(models.User.email == email).first()
+    context = {"request": request, "feedback": "Could not find email.", "login": False}
+    if email:
+        context["feedback"] = "Check your inbox for a reset link."
+    # send actual email
+    response = template.TemplateResponse("resetpassword.html", context)
     return response
