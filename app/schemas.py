@@ -1,9 +1,11 @@
 from fastapi import Query, Form
-from pydantic import BaseModel, RootModel, validator
+from pydantic import BaseModel, RootModel, validator, EmailStr
 import datetime
 
 
 
+class EmailSchema(BaseModel):
+    email: list[EmailStr]
 
 class BetBase(BaseModel):
     team1: str
