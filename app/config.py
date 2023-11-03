@@ -13,6 +13,13 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int
 
     api_key: str
+
+    MAIL_USERNAME: str
+    MAIL_PASSWORD: str
+    MAIL_FROM: str
+    MAIL_PORT: str
+    MAIL_SERVER: str
+
     class Config:
         env_file = ".env"
 
