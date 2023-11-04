@@ -23,10 +23,11 @@ class UserCreate(BaseModel):
     @classmethod
     def from_form(
         cls,
+        email: str = Form(""),
         username: str = Form(""),
         password: str = Form(""),
         passwordconfirm: str = Form("")):        
-        return cls(username=username, password=password, passwordconfirm=passwordconfirm)
+        return cls(email=email, username=username, password=password, passwordconfirm=passwordconfirm)
     
     def validate(self):
         if not len(self.username) > 2:
