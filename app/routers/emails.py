@@ -24,8 +24,8 @@ conf = ConnectionConfig(
 
 
 html = """
-<h1>testing<h1>
-<p>Thanks for using Fastapi-mail</p> 
+<h1>Password reset<h1>
+<p>Follow the link below to reset your password.</p> 
 """
 
 async def send_reset_mail(email: EmailSchema, url: str):
@@ -38,27 +38,3 @@ async def send_reset_mail(email: EmailSchema, url: str):
     fm = FastMail(conf)
     await fm.send_message(message)
     return "worked"
-
-@router.post("/reset_password", response_class=RedirectResponse)
-async def reset(email: EmailSchema):
-    message = MessageSchema(
-        subject="Reset Password",
-        recipients=email,
-        body=html,
-        subtype=MessageType.html)
-    
-    fm = FastMail(conf)
-    await fm.send_message(message)
-    return "worked" 
-
-@router.post("/confirm_email", response_class=RedirectResponse)
-async def confirm(email: EmailSchema):
-    message = MessageSchema(
-        subject="Confirm Email",
-        recipients=email,
-        body=html,
-        subtype=MessageType.html)
-
-    fm = FastMail(conf)
-    await fm.send_message(message)
-    return "worked" 

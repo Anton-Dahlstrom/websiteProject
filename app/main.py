@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Request, status, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from .routers import matches, users, auth, emails
+from .routers import matches, users, auth
 from fastapi.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 from . import oauth2, api
@@ -18,10 +18,10 @@ def print_event(sc=None):
     sc.run()
 
 
-# @app.on_event("startup")
-# async def startup_event():
-#     thread = Thread(target=print_event, kwargs=dict(sc=s))
-#     thread.start()
+@app.on_event("startup")
+async def startup_event():
+    thread = Thread(target=print_event, kwargs=dict(sc=s))
+    thread.start()
 
 
 # Directs jinja to our HTML templates
@@ -40,7 +40,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 # Adds our routers.
-app.include_router(emails.router)
 app.include_router(matches.router)
 app.include_router(users.router)
 app.include_router(auth.router)
