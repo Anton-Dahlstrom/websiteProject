@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Request, Form
+from fastapi import APIRouter, Depends, status, Request, Form
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from .. import schemas, models, utils, oauth2
+from .. import models, utils, oauth2
 from starlette.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from ..database import get_db

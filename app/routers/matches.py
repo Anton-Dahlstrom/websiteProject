@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Request, Depends, Response
+from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 from ..database import get_db
 from starlette.templating import Jinja2Templates
-from ..import models, schemas, oauth2
+from ..import models, oauth2
 from datetime import datetime, timedelta
 
 router = APIRouter(

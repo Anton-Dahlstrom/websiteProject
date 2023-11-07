@@ -1,13 +1,6 @@
-from typing import List
-
-from fastapi import BackgroundTasks, FastAPI, APIRouter
 from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
 from ..schemas import EmailSchema
-from starlette.responses import JSONResponse
 from ..config import settings
-from fastapi.responses import HTMLResponse, RedirectResponse
-
-router = APIRouter(tags=['Email'])
 
 
 conf = ConnectionConfig(

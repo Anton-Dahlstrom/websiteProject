@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Request, Depends, Form
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
+from starlette.templating import Jinja2Templates
 
 from . import emails
-from ..database import get_db
-from starlette.templating import Jinja2Templates
 from ..import models, schemas, utils, oauth2
+from ..database import get_db
 
 router = APIRouter(
     prefix="/user",
