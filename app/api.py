@@ -1,12 +1,10 @@
-
-import json
-from . import schemas, models, database
-from .database import SessionLocal
-from sqlalchemy.orm import Session
-from fastapi import APIRouter, Request, Depends
-from datetime import timedelta, datetime
-from .config import settings
 import requests 
+from datetime import timedelta, datetime
+
+from . import schemas, models
+from .database import SessionLocal
+from .config import settings
+
 
 api_key = settings.api_key
 sport = "soccer_sweden_allsvenskan"
