@@ -15,15 +15,15 @@ class BetBase(BaseModel):
     start: datetime.datetime
 
 class UserCreate(BaseModel):
-    username: str | None = None
-    password: str | None = None 
-    passwordconfirm: str | None = None
+    username: str
+    password: str
+    passwordconfirm: str
     email: str | None = None
 
     @classmethod
     def from_form(
         cls,
-        email: str = Form(""),
+        email: str | None = Form(None),
         username: str = Form(""),
         password: str = Form(""),
         passwordconfirm: str = Form("")):        
