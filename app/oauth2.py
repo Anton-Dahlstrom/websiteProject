@@ -40,8 +40,6 @@ def get_current_user(token: str, db: Session = Depends(get_db)):
             user = db.query(models.User).filter(models.User.id == int(token.id)).first()
             if user:
                 return user
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                    detail=f"user with id: {id} not found")
     return False
 
 def verify_cookie(request: Request):
@@ -49,8 +47,5 @@ def verify_cookie(request: Request):
     if token:
         user = get_current_user(token)
         if user:
-            return user.id
-        else:
-            return False
-    else:
-        return False
+            return user.id    
+    return False
