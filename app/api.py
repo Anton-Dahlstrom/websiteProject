@@ -7,7 +7,7 @@ from .config import settings
 
 
 api_key = settings.api_key
-sport = "icehockey_sweden_hockey_league"
+sport = "soccer_epl"
 region = "eu"
 markets = "h2h"
 url = f"https://api.the-odds-api.com/v4/sports/{sport}/odds/?apiKey={api_key}&regions={region}&markets={markets}"
