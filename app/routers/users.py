@@ -26,7 +26,6 @@ def post_register(request: Request, user: schemas.UserCreate = Depends(schemas.U
     if db.query(models.User).filter(models.User.username == user.username).first():
         context["feedback"] = "Username already exists."
     else:
-        print(user.email)
         validation = user.validate()
         context["feedback"] = validation["feedback"]
         if validation["validated"]:
@@ -38,7 +37,14 @@ def post_register(request: Request, user: schemas.UserCreate = Depends(schemas.U
             db.refresh(new_user)        
             context["user"] = user.username
             context["login"] = True
-            return template.TemplateResponse("index.html", context )
+
+            user = db.query(models.User).filter(models.User.username == user.username).first()
+            access_token = oauth2.create_access_token(data={"user_id": user.id})
+            context["login"] = True
+            response = template.TemplateResponse("index.html", context)
+            response.set_cookie(key="Authorization", value=access_token, httponly=True)
+            return response
+
     return template.TemplateResponse("register.html", context )
 
 @router.get("/reset_password", response_class=HTMLResponse)
