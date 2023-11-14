@@ -48,7 +48,7 @@ def update_matches():
             if next_update == None or datetime.now() > next_update:        
                 r = requests.get(url)
                 data = r.json()      
-                events = schemas.Model(data)
+                events = schemas.MatchList(data)
                 addUpdateTimeToDB(db)
                 for event in events.root:
                     setOdds(event)

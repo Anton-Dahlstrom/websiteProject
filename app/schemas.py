@@ -90,7 +90,7 @@ class Bookmaker(BaseModel):
     markets: list[Market]
 
 
-class ModelItem(BaseModel):
+class Match(BaseModel):
     id: str
     # sport_key: str
     sport_title: str
@@ -103,5 +103,5 @@ class ModelItem(BaseModel):
     bookmakers: list[Bookmaker]
 
 
-class Model(RootModel):
-    root: list[ModelItem]
+class MatchList(RootModel):
+    root: list[Match]
