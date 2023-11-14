@@ -18,7 +18,7 @@ def get_login(request:Request):
     return template.TemplateResponse("login.html",context)
 
 @router.post("/login", response_class=RedirectResponse)
-def login(request: Request, rememberme: bool = Form(False), user_credentials: OAuth2PasswordRequestForm = Depends(), 
+def post_login(request: Request, rememberme: bool = Form(False), user_credentials: OAuth2PasswordRequestForm = Depends(), 
           db: Session = Depends(get_db)):    
     user = db.query(models.User).filter(models.User.username == user_credentials.username).first()
     redirect_url = request.url_for("index")
